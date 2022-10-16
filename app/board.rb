@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'cell'
 
 class Board
@@ -5,7 +7,7 @@ class Board
 
   def initialize
     @board = {}
-    @dimensions = 8  
+    @dimensions = 8
   end
 
   def construct
