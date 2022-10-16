@@ -4,10 +4,12 @@ require_relative 'board'
 
 class Pawn
   attr_accessor :x, :y, :board
+  DIRECTIONS = {
+    NORTH: 'NORTH', EAST: 'EAST', WEST: 'WEST', SOUTH: 'SOUTH'
+  }.freeze
 
-  def initialize
-    @board = Board.new
-    @board.construct
+  def initialize(board)
+    @board = board
     @x = 0
     @y = 0
   end
@@ -22,10 +24,10 @@ class Pawn
   def move_the_pawn(data)
     from = board.board[[x, y].join(',')]
     case from[:facing]
-    when 'NORTH' then @y = data.present? ? @y + data.to_i : @y + 1
-    when 'EAST' then @x = data.present? ? @x + data.to_i : @y + 1
-    when 'WEST' then @x = data.present? && @y.positive? ? data.to_i - @x : @y - 1
-    when 'SOUTH' then @y = data.present? && @y.positive? ? data.to_i - @y : @y - 1
+    when DIRECTIONS[:NORTH] then @y = data.present? ? @y + data.to_i : @y + 1
+    when DIRECTIONS[:EAST] then @x = data.present? ? @x + data.to_i : @y + 1
+    when DIRECTIONS[:WEST] then @x = data.present? && @y.positive? ? data.to_i - @x : @y - 1
+    when DIRECTIONS[:SOUTH] then @y = data.present? && @y.positive? ? data.to_i - @y : @y - 1
     end
     board.board[[@x, @y].join(',')] = {
       facing: from[:facing], colour: from[:colour]
@@ -35,20 +37,20 @@ class Pawn
   def left_the_pawn
     current_origin = board.board[[@x, @y].join(',')]
     current_origin[:facing] = case current_origin[:facing]
-                              when 'NORTH' then 'WEST'
-                              when 'SOUTH' then 'EAST'
-                              when 'EAST' then 'NORTH'
-                              when 'WEST' then 'SOUTH'
+                              when DIRECTIONS[:NORTH] then DIRECTIONS[:WEST]
+                              when DIRECTIONS[:SOUTH] then DIRECTIONS[:EAST]
+                              when DIRECTIONS[:EAST] then DIRECTIONS[:NORTH]
+                              when DIRECTIONS[:WEST] then DIRECTIONS[:SOUTH]
                               end
   end
 
   def right_the_pawn
     current_origin = board.board[[@x, @y].join(',')]
     current_origin[:facing] = case current_origin[:facing]
-                              when 'NORTH' then 'EAST'
-                              when 'SOUTH' then 'WEST'
-                              when 'EAST' then 'SOUTH'
-                              when 'WEST' then 'NORTH'
+                              when DIRECTIONS[:NORTH] then DIRECTIONS[:EAST]
+                              when DIRECTIONS[:SOUTH] then DIRECTIONS[:WEST]
+                              when DIRECTIONS[:EAST] then DIRECTIONS[:SOUTH]
+                              when DIRECTIONS[:WEST] then DIRECTIONS[:NORTH]
                               end
   end
 end

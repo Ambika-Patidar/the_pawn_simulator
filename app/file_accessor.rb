@@ -12,4 +12,8 @@ class FileAccessor
     File.foreach(@file) { |line| parsed_data << line.chomp }
     parsed_data
   end
+
+  def write_into_file(data)
+    File.write(file, data)
+  end
 end
